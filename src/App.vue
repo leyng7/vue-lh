@@ -26,7 +26,7 @@ export default {
     return {
       notices: [],
       regionCode: '',
-      announcementTypeCode: '',
+      typeCode: '',
       page: 1
     }
   },
@@ -38,7 +38,7 @@ export default {
     },
     changeTypeCode: async function (typeCode) {
       this.page = 1;
-      this.announcementTypeCode = typeCode;
+      this.typeCode = typeCode;
       this.notices = await this.getNotices();
     },
     nextPage: async function () {
@@ -51,12 +51,13 @@ export default {
       const {data} = await axios
           .get('/api/lhLeaseNoticeInfo', {
             params: {
-              page: this.page,
-              regionCode: this.regionCode,
-              announcementTypeCode: this.announcementTypeCode
+              PAGE: this.page,
+              CNP_CD: this.regionCode,
+              UPP_AIS_TP_CD: this.typeCode
             }
           });
 
+      // 개수가 10개 이하라면 버튼 숨기기
       return data;
     }
   },
@@ -77,5 +78,11 @@ export default {
 <style>
 body {
   background-color: #42b983;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

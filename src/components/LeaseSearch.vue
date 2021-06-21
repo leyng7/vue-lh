@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <select @change="changeTypeCode" v-model="announcementTypeCode">
-      <option value="">전체</option>
+  <div id="selectContainer">
+    <select @change="changeTypeCode" v-model="typeCode">
+      <option value="">유형</option>
       <option value="01">토지</option>
       <option value="05">분양주택</option>
       <option value="06">임대주택</option>
@@ -10,7 +10,7 @@
       <option value="39">신혼희망타운</option>
     </select>
     <select @change="changeRegionCode" v-model="regionCode">
-      <option value="">전체</option>
+      <option value="">지역</option>
       <option value="11">서울특별시</option>
       <option value="26">부산광역시</option>
       <option value="27">대구광역시</option>
@@ -38,7 +38,7 @@ export default {
   data: function () {
     return {
       regionCode: '',
-      announcementTypeCode: ''
+      typeCode: ''
     }
   },
   methods: {
@@ -46,12 +46,20 @@ export default {
       this.$emit('changeRegionCode', this.regionCode);
     },
     changeTypeCode: function () {
-      this.$emit('changeTypeCode', this.announcementTypeCode);
+      this.$emit('changeTypeCode', this.typeCode);
     }
   }
 }
 </script>
 
 <style scoped>
+#selectContainer {
+  padding: 5px;
+}
 
+select {
+  padding: 10px;
+  border: 0;
+  margin-left: 5px;
+}
 </style>

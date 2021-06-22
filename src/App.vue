@@ -4,7 +4,10 @@
         v-on:changeRegionCode="changeRegionCode"
         v-on:changeTypeCode="changeTypeCode"
     />
-    <LeaseList v-bind:notices="notices"/>
+    <LeaseList
+        v-bind:notices="notices"
+        v-bind:isLoading="isLoading"
+    />
     <LeaseFooter v-on:nextPage="nextPage"/>
   </div>
 </template>
@@ -27,7 +30,8 @@ export default {
       notices: [],
       regionCode: '',
       typeCode: '',
-      page: 1
+      page: 1,
+      isLoading: false
     }
   },
   methods: {
@@ -47,7 +51,7 @@ export default {
       this.notices.push(...data);
     },
     getNotices: async function () {
-
+      this.isLoading = true;
       const {data} = await axios
           .get('/api/lhLeaseNoticeInfo', {
             params: {
@@ -56,28 +60,20 @@ export default {
               UPP_AIS_TP_CD: this.typeCode
             }
           });
-
+      this.isLoading = false;
       // 개수가 10개 이하라면 버튼 숨기기
       return data;
     }
   },
-  created: function () {
-    const vm = this;
-    axios
-        .get('/api/lhLeaseNoticeInfo')
-        .then(response => {
-          vm.notices = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+  created: async function () {
+    this.notices = await this.getNotices();
   }
 }
 </script>
 
 <style>
 body {
-  background-color: #42b983;
+  /*background-color: #D7FFF1;*/
 }
 
 #app {
